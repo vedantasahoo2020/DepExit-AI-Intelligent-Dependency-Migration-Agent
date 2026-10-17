@@ -1,0 +1,497 @@
+{
+  "schema": "dependency-exit-capsule/1.0",
+  "generated_by": "depexit 0.1.0",
+  "target": {
+    "repository": "https://github.com/rishrek/LinkWatch",
+    "commit": "f52f3930c8e7c33d934ccf614955a38e26984bd5",
+    "python": "3.12.7"
+  },
+  "dependency": {
+    "name": "jinja2",
+    "modules": [
+      "jinja2"
+    ],
+    "installed_version": "2.11.3",
+    "latest_version": "3.1.6",
+    "console_scripts": []
+  },
+  "verdict": {
+    "value": "verified_improvement",
+    "meaning": "migration applied, previously failing checks now pass, no regressions",
+    "attempts": 1,
+    "source": "observed"
+  },
+  "observed": {
+    "declarations": [
+      {
+        "name": "jinja2",
+        "display_name": "Jinja2",
+        "specifier": "==2.11.3",
+        "pinned": "2.11.3",
+        "marker": null,
+        "file": "requirements.txt",
+        "line": 4,
+        "group": "runtime",
+        "raw": "Jinja2==2.11.3"
+      },
+      {
+        "name": "jinja2",
+        "display_name": "Jinja2",
+        "specifier": "==2.11.3",
+        "pinned": "2.11.3",
+        "marker": null,
+        "file": "pyproject.toml",
+        "line": 16,
+        "group": "runtime",
+        "raw": "Jinja2==2.11.3"
+      }
+    ],
+    "pypi": {
+      "source_url": "https://pypi.org/pypi/jinja2/json",
+      "summary": "A very fast and expressive template engine.",
+      "latest_version": "3.1.6",
+      "latest_release_date": "2025-03-05T20:05:00.369721Z",
+      "requires_python_latest": ">=3.7",
+      "dev_status": [
+        "5 - Production/Stable"
+      ],
+      "python_classifiers": [],
+      "project_urls": {
+        "Changes": "https://jinja.palletsprojects.com/changes/",
+        "Chat": "https://discord.gg/pallets",
+        "Documentation": "https://jinja.palletsprojects.com/",
+        "Donate": "https://palletsprojects.com/donate",
+        "Source": "https://github.com/pallets/jinja/"
+      },
+      "license": "",
+      "release_count": 48
+    },
+    "risk": {
+      "level": "high",
+      "score": 8,
+      "indicators": [
+        {
+          "id": "import_fails",
+          "severity": 3,
+          "detail": "`import jinja2` fails on Python 3.12.15",
+          "evidence": "ImportError: cannot import name 'soft_unicode' from 'markupsafe' (C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (site-packages/markupsafe/__init__.py)",
+          "source": "observed",
+          "install_routes": [
+            "pyproject",
+            "requirements"
+          ]
+        },
+        {
+          "id": "test_failure",
+          "severity": 3,
+          "detail": "Test `tests.test_report::test_report_renders_all_sites` fails inside this dependency",
+          "evidence": "ImportError: cannot import name 'soft_unicode' from 'markupsafe' (C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (site-packages/markupsafe/__init__.py)",
+          "source": "observed",
+          "install_routes": [
+            "pyproject",
+            "requirements"
+          ]
+        },
+        {
+          "id": "pinned_behind",
+          "severity": 2,
+          "detail": "Pinned to 2.11.3; latest is 3.1.6 (1 major version(s) behind)",
+          "evidence": "pinned release date: 2021-01-31T16:33:07.289264Z (5.7 years old)",
+          "source": "observed",
+          "install_routes": []
+        }
+      ]
+    },
+    "usage": {
+      "imports": [
+        {
+          "file": "linkwatch/report.py",
+          "line": 3,
+          "statement": "from jinja2 import Environment, FileSystemLoader, select_autoescape",
+          "module": "jinja2",
+          "name": "Environment",
+          "alias": null,
+          "scope": "<module>",
+          "lazy": false,
+          "private_api": false,
+          "side_effect_only": false
+        },
+        {
+          "file": "linkwatch/report.py",
+          "line": 3,
+          "statement": "from jinja2 import Environment, FileSystemLoader, select_autoescape",
+          "module": "jinja2",
+          "name": "FileSystemLoader",
+          "alias": null,
+          "scope": "<module>",
+          "lazy": false,
+          "private_api": false,
+          "side_effect_only": false
+        },
+        {
+          "file": "linkwatch/report.py",
+          "line": 3,
+          "statement": "from jinja2 import Environment, FileSystemLoader, select_autoescape",
+          "module": "jinja2",
+          "name": "select_autoescape",
+          "alias": null,
+          "scope": "<module>",
+          "lazy": false,
+          "private_api": false,
+          "side_effect_only": false
+        }
+      ],
+      "usages": [
+        {
+          "file": "linkwatch/report.py",
+          "line": 9,
+          "scope": "make_env",
+          "symbol": "jinja2.Environment",
+          "expr": "Environment",
+          "kind": "call",
+          "private_api": false,
+          "code": "return Environment("
+        },
+        {
+          "file": "linkwatch/report.py",
+          "line": 10,
+          "scope": "make_env",
+          "symbol": "jinja2.FileSystemLoader",
+          "expr": "FileSystemLoader",
+          "kind": "call",
+          "private_api": false,
+          "code": "loader=FileSystemLoader(template_dir()),"
+        },
+        {
+          "file": "linkwatch/report.py",
+          "line": 11,
+          "scope": "make_env",
+          "symbol": "jinja2.select_autoescape",
+          "expr": "select_autoescape",
+          "kind": "call",
+          "private_api": false,
+          "code": "autoescape=select_autoescape([\"html\", \"j2\"]),"
+        }
+      ],
+      "non_python_references": []
+    },
+    "baseline": {
+      "requirements": {
+        "install_ok": true,
+        "tests": {
+          "passed": 9,
+          "failed": 1
+        },
+        "failing": [
+          "tests.test_report::test_report_renders_all_sites"
+        ],
+        "warnings": [
+          "C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (linkwatch/resources.py:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html"
+        ]
+      },
+      "pyproject": {
+        "install_ok": true,
+        "tests": {
+          "passed": 9,
+          "failed": 1
+        },
+        "failing": [
+          "tests.test_report::test_report_renders_all_sites"
+        ],
+        "warnings": [
+          "C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (site-packages/pydantic/_internal/_config.py:408: UserWarning: Valid config keys have changed in V2:",
+          "C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (linkwatch/resources.py:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html"
+        ]
+      }
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "verdict": "verified_improvement",
+        "skipped": null,
+        "apply": {
+          "log": [
+            "edited requirements.txt",
+            "edited pyproject.toml"
+          ],
+          "errors": []
+        },
+        "comparison": {
+          "routes": {
+            "requirements": {
+              "install_ok_before": true,
+              "install_ok_after": true,
+              "tests_before": {
+                "passed": 9,
+                "failed": 1
+              },
+              "tests_after": {
+                "passed": 10
+              },
+              "fixed": [
+                "tests.test_report::test_report_renders_all_sites"
+              ],
+              "regressed": [],
+              "still_failing": [],
+              "new_tests": [],
+              "warnings_removed": [],
+              "warnings_added": [],
+              "regression_details": {}
+            },
+            "pyproject": {
+              "install_ok_before": true,
+              "install_ok_after": true,
+              "tests_before": {
+                "passed": 9,
+                "failed": 1
+              },
+              "tests_after": {
+                "passed": 10
+              },
+              "fixed": [
+                "tests.test_report::test_report_renders_all_sites"
+              ],
+              "regressed": [],
+              "still_failing": [],
+              "new_tests": [],
+              "warnings_removed": [],
+              "warnings_added": [],
+              "regression_details": {}
+            }
+          },
+          "residual_references": []
+        },
+        "replacement_imports": {},
+        "installs": {
+          "requirements": {
+            "ok": true,
+            "route": "requirements",
+            "error": null,
+            "steps": [
+              {
+                "cmd": "C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.venv\\Scripts\\uv.exe venv --python 3.12 C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-requirements",
+                "returncode": 0,
+                "seconds": 0.2,
+                "output_tail": "Using CPython 3.12.15\nCreating virtual environment at: .depexit-work\\envs\\jinja2-1-requirements\nActivate with: .depexit-work\\envs\\jinja2-1-requirements\\Scripts\\activate"
+              },
+              {
+                "cmd": "C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.venv\\Scripts\\uv.exe pip install --python C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-requirements\\Scripts\\python.exe -r C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\candidates\\jinja2-1\\requirements-dev.txt -r C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\candidates\\jinja2-1\\requirements.txt",
+                "returncode": 0,
+                "seconds": 1.4,
+                "output_tail": " + certifi==2026.7.22\n + chardet==5.2.0\n + charset-normalizer==3.5.2\n + click==8.5.0\n + colorama==0.4.6\n + idna==2.7\n + iniconfig==2.3.1\n + jinja2==3.1.6\n + markdown-it-py==4.2.0\n + markupsafe==3.0.4\n + mdurl==0.1.2\n + nose==1.3.7\n + packaging==26.3\n + pluggy==1.7.0\n + pydantic==1.10.13\n + pygments==2.21.0\n + pytest==9.1.1\n + python-dateutil==2.9.0.post0\n + requests==2.31.0\n + rich==15.0.0\n + setuptools==75.8.0\n + six==1.17.0\n + toml==0.10.2\n + typing-extensions==4.16.0\n + urllib3==2.8.0"
+              },
+              {
+                "cmd": "C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.venv\\Scripts\\uv.exe pip install --python C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-requirements\\Scripts\\python.exe pytest",
+                "returncode": 0,
+                "seconds": 0.1,
+                "output_tail": "Using Python 3.12.15 environment at: C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-requirements\nChecked 1 package in 9ms"
+              }
+            ]
+          },
+          "pyproject": {
+            "ok": true,
+            "route": "pyproject",
+            "error": null,
+            "steps": [
+              {
+                "cmd": "C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.venv\\Scripts\\uv.exe venv --python 3.12 C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-pyproject",
+                "returncode": 0,
+                "seconds": 0.2,
+                "output_tail": "Using CPython 3.12.15\nCreating virtual environment at: .depexit-work\\envs\\jinja2-1-pyproject\nActivate with: .depexit-work\\envs\\jinja2-1-pyproject\\Scripts\\activate"
+              },
+              {
+                "cmd": "C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.venv\\Scripts\\uv.exe pip install --python C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-pyproject\\Scripts\\python.exe C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\candidates\\jinja2-1",
+                "returncode": 0,
+                "seconds": 5.0,
+                "output_tail": "Installed 24 packages in 1.09s\n + annotated-types==0.8.0\n + appdirs==1.4.4\n + certifi==2026.7.22\n + chardet==5.2.0\n + charset-normalizer==3.5.2\n + click==8.5.0\n + idna==2.7\n + jinja2==3.1.6\n + linkwatch==0.3.1 (from file:///C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main%20(1)/H26_Prompt-Pirates_DepExit-main/tool/.depexit-work/candidates/jinja2-1)\n + markdown-it-py==4.2.0\n + markupsafe==3.0.4\n + mdurl==0.1.2\n + pydantic==2.14.1\n + pydantic-core==2.50.1\n + pygments==2.21.0\n + python-dateutil==2.9.0.post0\n + requests==2.31.0\n + rich==15.0.0\n + setuptools==75.8.0\n + six==1.17.0\n + toml==0.10.2\n + typing-extensions==4.16.0\n + typing-inspection==0.4.4\n + urllib3==2.8.0"
+              },
+              {
+                "cmd": "C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.venv\\Scripts\\uv.exe pip install --python C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-pyproject\\Scripts\\python.exe pytest",
+                "returncode": 0,
+                "seconds": 0.2,
+                "output_tail": "Using Python 3.12.15 environment at: C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-pyproject\nResolved 6 packages in 11ms\nInstalled 5 packages in 146ms\n + colorama==0.4.6\n + iniconfig==2.3.1\n + packaging==26.3\n + pluggy==1.7.0\n + pytest==9.1.1"
+              }
+            ]
+          }
+        },
+        "test_runs": {
+          "requirements": {
+            "command": "C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-requirements\\Scripts\\python.exe -m pytest -q -rfE -p no:cacheprovider -W default --junitxml=C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-requirements\\junit.xml",
+            "counts": {
+              "passed": 10
+            },
+            "tests": {
+              "tests.test_cache::test_cache_round_trip": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_ok_is_up": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_missing_is_down": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_redirect_is_up": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_slow_is_up": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_closed_port_is_down": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_latin1_title": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_user_agent": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_config::test_sites_file_loads": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_report::test_report_renders_all_sites": {
+                "outcome": "passed",
+                "message": ""
+              }
+            },
+            "warnings": [
+              "C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (linkwatch/resources.py:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html"
+            ],
+            "output_tail": "..........                                                               [100%]\n============================== warnings summary ===============================\nlinkwatch\\resources.py:1\n  C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\candidates\\jinja2-1\\linkwatch\\resources.py:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html\n    import pkg_resources\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n10 passed, 1 warning in 9.38s"
+          },
+          "pyproject": {
+            "command": "C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-pyproject\\Scripts\\python.exe -m pytest -q -rfE -p no:cacheprovider -W default --junitxml=C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-pyproject\\junit.xml",
+            "counts": {
+              "passed": 10
+            },
+            "tests": {
+              "tests.test_cache::test_cache_round_trip": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_ok_is_up": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_missing_is_down": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_redirect_is_up": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_slow_is_up": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_closed_port_is_down": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_latin1_title": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_checker::test_user_agent": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_config::test_sites_file_loads": {
+                "outcome": "passed",
+                "message": ""
+              },
+              "tests.test_report::test_report_renders_all_sites": {
+                "outcome": "passed",
+                "message": ""
+              }
+            },
+            "warnings": [
+              "C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (site-packages/pydantic/_internal/_config.py:408: UserWarning: Valid config keys have changed in V2:",
+              "C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (linkwatch/resources.py:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html"
+            ],
+            "output_tail": "..........                                                               [100%]\n============================== warnings summary ===============================\nlinkwatch\\config.py:14\n  C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\candidates\\jinja2-1\\linkwatch\\config.py:14: PydanticDeprecatedSince20: Pydantic V1 style `@validator` validators are deprecated. You should migrate to Pydantic V2 style `@field_validator` validators, see the migration guide for more details. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.14/migration/\n    @validator(\"name\")\n\nlinkwatch\\config.py:20\n  C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\candidates\\jinja2-1\\linkwatch\\config.py:20: PydanticDeprecatedSince20: Pydantic V1 style `@validator` validators are deprecated. You should migrate to Pydantic V2 style `@field_validator` validators, see the migration guide for more details. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.14/migration/\n    @validator(\"url\")\n\nlinkwatch\\config.py:7\n  C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\candidates\\jinja2-1\\linkwatch\\config.py:7: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.14/migration/\n    class Site(BaseModel):\n\n..\\..\\envs\\jinja2-1-pyproject\\Lib\\site-packages\\pydantic\\_internal\\_config.py:408\n  C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\envs\\jinja2-1-pyproject\\Lib\\site-packages\\pydantic\\_internal\\_config.py:408: UserWarning: Valid config keys have changed in V2:\n  * 'anystr_strip_whitespace' has been renamed to 'str_strip_whitespace'\n    warnings.warn(message, UserWarning)\n\nlinkwatch\\config.py:27\n  C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\candidates\\jinja2-1\\linkwatch\\config.py:27: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.14/migration/\n    class Settings(BaseModel):\n\nlinkwatch\\resources.py:1\n  C:\\Users\\mihir\\OneDrive\\Desktop\\H26_Prompt-Pirates_DepExit-main (1)\\H26_Prompt-Pirates_DepExit-main\\tool\\.depexit-work\\candidates\\jinja2-1\\linkwatch\\resources.py:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html\n    import pkg_resources\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n10 passed, 6 warnings in 8.87s"
+          }
+        },
+        "diff": "--- a/pyproject.toml\n+++ b/pyproject.toml\n@@ -13,7 +13,7 @@\n     \"toml==0.10.2\",\n     \"appdirs==1.4.4\",\n     \"requests==2.31.0\",\n-    \"Jinja2==2.11.3\",\n+    \"Jinja2>=3.1.0\",\n     \"pydantic>=2\",\n     \"click>=7\",\n     \"six\",\n--- a/requirements.txt\n+++ b/requirements.txt\n@@ -1,7 +1,7 @@\n toml==0.10.2\n appdirs==1.4.4\n requests==2.31.0\n-Jinja2==2.11.3\n+Jinja2>=3.1.0\n pydantic==1.10.13\n click>=7\n six\n"
+      }
+    ],
+    "compatibility_gaps": [],
+    "open_concerns": []
+  },
+  "ai_generated": {
+    "model": "gemma-4-26b-a4b-it",
+    "enabled": true,
+    "error": null,
+    "assessment": "Jinja2 2.11.3 is incompatible with modern versions of MarkupSafe, which causes an ImportError on Python 3.12. Upgrading to Jinja2 3.x resolves this dependency conflict and provides support for newer Python versions.",
+    "action": "upgrade",
+    "proposed_replacement": {
+      "package": "Jinja2",
+      "requirement": ">=3.1.0",
+      "why": "Fixes MarkupSafe compatibility issues and supports Python 3.12"
+    },
+    "manifest_changes": {
+      "remove": [],
+      "add": []
+    },
+    "code_changes": [
+      {
+        "file": "requirements.txt",
+        "find": "Jinja2==2.11.3",
+        "replace": "Jinja2>=3.1.0",
+        "why": "Upgrade to resolve MarkupSafe ImportError"
+      },
+      {
+        "file": "pyproject.toml",
+        "find": "    \"Jinja2==2.11.3\",",
+        "replace": "    \"Jinja2>=3.1.0\",",
+        "why": "Upgrade to resolve MarkupSafe ImportError"
+      }
+    ],
+    "migration_steps": [
+      "Update requirements.txt to use Jinja2>=3.1.0",
+      "Update pyproject.toml to use Jinja2>=3.1.0",
+      "Reinstall dependencies using pip"
+    ],
+    "suggested_tests": [
+      "Run pytest to verify that tests/test_report.py passes",
+      "Verify that the HTML report is correctly rendered by running the linkwatch CLI"
+    ],
+    "risks": [
+      "Potential subtle changes in template rendering or whitespace handling between Jinja2 2.x and 3.x"
+    ],
+    "proposal_history": [
+      "upgrade"
+    ],
+    "validation_problems_repaired": null,
+    "review": {
+      "summary": "The upgrade from Jinja2 2.11.3 to >=3.1.0 successfully resolved a test failure in `tests.test_report::test_report_renders_all_sites` and addresses Python 3.12 compatibility issues. All tests passed after the upgrade with no regressions observed.",
+      "compatibility_gaps": [],
+      "unresolved_risks": [
+        "Potential behavioral changes resulting from the major version jump from 2.x to 3.x that might not be captured by the existing test suite."
+      ],
+      "additional_tests": [
+        "Perform comprehensive integration testing on complex template structures to ensure no breaking changes in rendering logic."
+      ],
+      "confidence": "high",
+      "confidence_reason": "The upgrade fixed a known failing test and all existing tests passed successfully without any new regressions."
+    },
+    "note": "AI-generated content. Only the 'observed' section is verified by execution."
+  },
+  "limitations": [
+    "Verification is only as strong as the repository's own test suite; untested code paths are not proven.",
+    "Static analysis cannot see dynamic imports (importlib, __import__, plugins loaded by name).",
+    "Each install route (requirements files / pyproject) is verified separately; other environments (other OSes, other Python versions) were not tested.",
+    "Network-dependent behaviour is only exercised where the tests do so.",
+    "Security vulnerabilities are out of scope for this run.",
+    "No test file exercises this dependency directly; behaviour equivalence relies on indirect coverage."
+  ]
+}

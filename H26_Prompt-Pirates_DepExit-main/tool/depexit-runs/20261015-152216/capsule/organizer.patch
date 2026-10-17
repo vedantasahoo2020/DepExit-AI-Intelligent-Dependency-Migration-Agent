@@ -1,0 +1,66 @@
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -10,18 +10,17 @@
+ license = { text = "MIT" }
+ requires-python = ">=3.10"
+ dependencies = [
+-    "toml==0.10.2",
+     "appdirs==1.4.4",
+-    "requests==2.31.0",
++    "certifi",
++    "chardet==5.2.0",
++    "click>=7",
+     "Jinja2>=3.1.0",
+     "pydantic>=2",
+-    "click>=7",
+-    "six",
+-    "chardet==5.2.0",
++    "python-dateutil",
++    "requests==2.31.0",
++    "rich",
+     "setuptools==75.8.0",
+-    "idna==2.7",
+-    "python-dateutil",
+-    "rich",
++    "toml==0.10.2",
+ ]
+ 
+ [project.scripts]
+--- a/requirements-dev.txt
++++ b/requirements-dev.txt
+@@ -1,2 +1,3 @@
+-pytest
+-nose==1.3.7
++# Development / test dependencies - organized by DepExit
++nose==1.3.7  # (AI) Runs the project tests.
++pytest  # (AI) Provides a framework for running tests.
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,13 +1,15 @@
+-toml==0.10.2
+-appdirs==1.4.4
+-requests==2.31.0
+-Jinja2>=3.1.0
+-pydantic==1.10.13
+-click>=7
+-six
+-chardet==5.2.0
+-setuptools==75.8.0
+-idna==2.7
+-python-dateutil
+-rich
++# Runtime dependencies - organized by DepExit (sorted, synced with pyproject.toml)
++appdirs==1.4.4  # (AI) Determines platform-specific cache directory locations.
++certifi  # (AI) Provides SSL certificates for secure HTTP requests.
++chardet==5.2.0  # (AI) Detects character encoding of response content.
++click>=7  # (AI) Creates the command line interface.
++Jinja2>=3.1.0  # (AI) Renders HTML report templates.
++pydantic==1.10.13  # (AI) Validates site and settings configuration data.
++python-dateutil  # (AI) Parses date strings into datetime objects.
++requests==2.31.0  # (AI) Handles HTTP requests and responses.
++rich  # (AI) Renders beautiful tables and terminal output.
++setuptools==75.8.0  # (AI) Locates package resource files like templates.
++toml==0.10.2  # (AI) Parses TOML configuration files.
++
++# Disabled
+ # PyYAML==5.1

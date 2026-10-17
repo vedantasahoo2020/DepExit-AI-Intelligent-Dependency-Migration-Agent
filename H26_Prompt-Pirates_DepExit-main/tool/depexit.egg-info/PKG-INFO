@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: depexit
+Version: 0.1.0
+Summary: AI-assisted dependency exit planning for Python repositories, verified by execution
+License-Expression: MIT
+Requires-Python: >=3.10
+License-File: LICENSE
+Requires-Dist: google-genai>=1.0
+Requires-Dist: packaging>=23
+Requires-Dist: rich>=13
+Requires-Dist: uv>=0.4
+Requires-Dist: tomli>=2; python_version < "3.11"
+Dynamic: license-file

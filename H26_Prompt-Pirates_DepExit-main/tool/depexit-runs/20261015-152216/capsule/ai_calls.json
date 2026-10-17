@@ -1,0 +1,29 @@
+[
+  {
+    "purpose": "propose:jinja2",
+    "model": "gemma-4-26b-a4b-it",
+    "prompt_sha256": "abe7e284ad5721d2",
+    "prompt_chars": 6912,
+    "response_chars": 1314,
+    "seconds": 73.7,
+    "raw_response": "{\n  \"assessment\": \"Jinja2 2.11.3 is incompatible with modern versions of MarkupSafe, which causes an ImportError on Python 3.12. Upgrading to Jinja2 3.x resolves this dependency conflict and provides support for newer Python versions.\",\n  \"action\": \"upgrade\",\n  \"replacement\": {\n    \"package\": \"Jinja2\",\n    \"requirement\": \">=3.1.0\",\n    \"why\": \"Fixes MarkupSafe compatibility issues and supports Python 3.12\"\n  },\n  \"remove_requirements\": [],\n  \"add_requirements\": [],\n  \"code_changes\": [\n    {\n      \"file\": \"requirements.txt\",\n      \"find\": \"Jinja2==2.11.3\",\n      \"replace\": \"Jinja2>=3.1.0\",\n      \"why\": \"Upgrade to resolve MarkupSafe ImportError\"\n    },\n    {\n      \"file\": \"pyproject.toml\",\n      \"find\": \"    \\\"Jinja2==2.11.3\\\",\",\n      \"replace\": \"    \\\"Jinja2>=3.1.0\\\",\",\n      \"why\": \"Upgrade to resolve MarkupSafe ImportError\"\n    }\n  ],\n  \"migration_steps\": [\n    \"Update requirements.txt to use Jinja2>=3.1.0\",\n    \"Update pyproject.toml to use Jinja2>=3.1.0\",\n    \"Reinstall dependencies using pip\"\n  ],\n  \"suggested_tests\": [\n    \"Run pytest to verify that tests/test_report.py passes\",\n    \"Verify that the HTML report is correctly rendered by running the linkwatch CLI\"\n  ],\n  \"risks\": [\n    \"Potential subtle changes in template rendering or whitespace handling between Jinja2 2.x and 3.x\"\n  ]\n}"
+  },
+  {
+    "purpose": "review:jinja2",
+    "model": "gemma-4-26b-a4b-it",
+    "prompt_sha256": "25009fea208ed618",
+    "prompt_chars": 2144,
+    "response_chars": 784,
+    "seconds": 19.1,
+    "raw_response": "{\n  \"summary\": \"The upgrade from Jinja2 2.11.3 to >=3.1.0 successfully resolved a test failure in `tests.test_report::test_report_renders_all_sites` and addresses Python 3.12 compatibility issues. All tests passed after the upgrade with no regressions observed.\",\n  \"compatibility_gaps\": [],\n  \"unresolved_risks\": [\n    \"Potential behavioral changes resulting from the major version jump from 2.x to 3.x that might not be captured by the existing test suite.\"\n  ],\n  \"additional_tests\": [\n    \"Perform comprehensive integration testing on complex template structures to ensure no breaking changes in rendering logic.\"\n  ],\n  \"confidence\": \"high\",\n  \"confidence_reason\": \"The upgrade fixed a known failing test and all existing tests passed successfully without any new regressions.\"\n}"
+  },
+  {
+    "purpose": "organizer:annotate",
+    "model": "gemma-4-26b-a4b-it",
+    "prompt_sha256": "d530808c4517aa91",
+    "prompt_chars": 3951,
+    "response_chars": 751,
+    "seconds": 78.9,
+    "raw_response": "{\n  \"appdirs\": \"Determines platform-specific cache directory locations.\",\n  \"certifi\": \"Provides SSL certificates for secure HTTP requests.\",\n  \"chardet\": \"Detects character encoding of response content.\",\n  \"click\": \"Creates the command line interface.\",\n  \"jinja2\": \"Renders HTML report templates.\",\n  \"nose\": \"Runs the project tests.\",\n  \"pydantic\": \"Validates site and settings configuration data.\",\n  \"pytest\": \"Provides a framework for running tests.\",\n  \"python-dateutil\": \"Parses date strings into datetime objects.\",\n  \"requests\": \"Handles HTTP requests and responses.\",\n  \"rich\": \"Renders beautiful tables and terminal output.\",\n  \"setuptools\": \"Locates package resource files like templates.\",\n  \"toml\": \"Parses TOML configuration files.\"\n}"
+  }
+]

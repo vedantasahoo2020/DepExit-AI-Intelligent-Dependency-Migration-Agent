@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DepExit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ffffff; --ink:#000000; --graphite:#555555; --mist:#8a8a8a; --rule:#e3e3e3; --wash:#f5f5f5;
+  --sans:"Schibsted Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink)}
+body{font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+code,.code{font-family:var(--mono);font-size:.86em}
+a{color:inherit;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.hidden{display:none !important}
+.muted{color:var(--graphite)} .faint{color:var(--mist)} .small{font-size:13px}
+
+/* ---------- frame ---------- */
+.top{display:flex;align-items:center;gap:20px;padding:14px 28px;border-bottom:1px solid var(--ink);position:sticky;top:0;background:var(--paper);z-index:20}
+.mark{font-weight:900;font-size:22px;letter-spacing:-.04em;display:flex;align-items:center;gap:10px}
+.mark i{display:inline-block;width:22px;height:22px;border:2.5px solid var(--ink);border-radius:50%;position:relative}
+.mark i::after{content:"";position:absolute;inset:5px;background:var(--ink);border-radius:50%}
+.top .tagline{color:var(--graphite);font-size:14px}
+.top .right{margin-left:auto;display:flex;gap:16px;align-items:center;font-size:13px}
+.legend{display:flex;gap:18px;align-items:center}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend .solid,.legend .dash{display:inline-block;width:26px;height:0;border-top:2px solid var(--ink)}
+.legend .dash{border-top-style:dashed}
+
+.shell{display:grid;grid-template-columns:330px 1fr;min-height:calc(100vh - 57px)}
+.rail{border-right:1px solid var(--rule);padding:24px 24px 40px;position:sticky;top:57px;align-self:start;max-height:calc(100vh - 57px);overflow:auto}
+.main{padding:28px 40px 80px;min-width:0}
+
+/* ---------- controls ---------- */
+.field{margin-bottom:18px}
+.field > label,.lbl{display:block;font-weight:600;font-size:13px;margin-bottom:6px}
+.hint{font-size:12px;color:var(--mist);margin-top:5px}
+input[type=text],input[type=password],input[type=number],select{width:100%;height:40px;padding:0 12px;border:1px solid var(--ink);border-radius:8px;background:var(--paper);font-size:14px}
+input.mono{font-family:var(--mono);font-size:13px}
+input::placeholder{color:var(--mist)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--ink);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--paper);padding:9px 6px;cursor:pointer;font-size:13px;font-weight:500;border-right:1px solid var(--ink);transition:background .2s var(--ease),color .2s var(--ease)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.seg-desc{font-size:12px;color:var(--graphite);margin-top:6px;min-height:18px}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--rule);cursor:pointer}
+.toggle:last-of-type{border-bottom:1px solid var(--rule)}
+.toggle b{font-weight:600;font-size:14px;display:block} .toggle small{color:var(--graphite);font-size:12px}
+.sw{position:relative;width:38px;height:22px;flex:none}
+.sw input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.sw span{position:absolute;inset:0;border:1.5px solid var(--ink);border-radius:20px;transition:background .2s var(--ease)}
+.sw span::after{content:"";position:absolute;top:3px;left:3px;width:13px;height:13px;border-radius:50%;background:var(--ink);transition:transform .25s var(--ease),background .2s}
+.sw input:checked + span{background:var(--ink)}
+.sw input:checked + span::after{transform:translateX(16px);background:var(--paper)}
+.sw input:focus-visible + span{outline:2px solid var(--ink);outline-offset:2px}
+.checks{display:flex;gap:8px;flex-wrap:wrap}
+.chk{display:flex;align-items:center;gap:6px;border:1px solid var(--rule);border-radius:999px;padding:5px 11px 5px 8px;cursor:pointer;font-size:13px;user-select:none}
+.chk input{accent-color:#000;margin:0}
+.chk:has(input:checked){border-color:var(--ink)}
+details.adv{margin:14px 0 18px}
+details.adv summary{cursor:pointer;font-size:13px;font-weight:600;list-style:none;display:flex;align-items:center;gap:8px}
+details.adv summary::before{content:"+";display:inline-grid;place-items:center;width:18px;height:18px;border:1px solid var(--ink);border-radius:4px;font-size:12px}
+details.adv[open] summary::before{content:"−"}
+details.adv .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:42px;padding:0 18px;border-radius:8px;border:1px solid var(--ink);background:var(--paper);cursor:pointer;font-weight:600;font-size:14px;transition:transform .15s var(--ease),background .2s,color .2s}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--ink);color:var(--paper);width:100%;height:48px;font-size:15px}
+.btn.primary:hover{background:#222}
+.btn[disabled]{opacity:.35;cursor:not-allowed}
+.btn.sm{height:32px;padding:0 12px;font-size:13px;font-weight:500}
+.keyrow{display:flex;gap:8px}
+.keyrow input{flex:1}
+.keystate{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:8px}
+.dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink);flex:none}
+.dot.on{background:var(--ink)}
+
+.history h3{font-size:13px;font-weight:600;margin:28px 0 8px}
+.hist{list-style:none;margin:0;padding:0}
+.hist li{border-top:1px solid var(--rule)}
+.hist button{all:unset;display:block;width:100%;padding:10px 0;cursor:pointer;box-sizing:border-box}
+.hist button:hover .h1{text-decoration:underline}
+.hist button:focus-visible{outline:2px solid var(--ink)}
+.hist .h1{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist .h2{font-size:12px;color:var(--graphite)}
+.hist li.cur .h1::before{content:"";display:inline-block;width:7px;height:7px;background:var(--ink);border-radius:50%;margin-right:7px;vertical-align:1px}
+
+/* ---------- idle hero ---------- */
+.idle{max-width:780px;padding-top:40px}
+.idle h1{font-size:clamp(40px,6vw,76px);line-height:.98;letter-spacing:-.045em;font-weight:800;margin:0 0 24px}
+.idle p.lede{font-size:18px;color:var(--graphite);max-width:60ch;margin:0 0 40px}
+.flow{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(5,1fr);border-top:2px solid var(--ink)}
+.flow li{padding:14px 14px 0 0;position:relative}
+.flow li b{display:block;font-size:14px;margin-bottom:4px}
+.flow li span{font-size:13px;color:var(--graphite)}
+.flow li .n{font-family:var(--mono);font-size:12px;color:var(--mist)}
+.flow li.ai{border-top:2px dashed var(--ink);margin-top:-2px}
+
+/* ---------- running ---------- */
+.runhead{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.runhead h2{font-size:30px;letter-spacing:-.03em;margin:0;font-weight:800}
+.runhead .elapsed{font-family:var(--mono);font-size:14px;color:var(--graphite)}
+.track{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-bottom:10px}
+.track .seg2{height:8px;border:1.5px solid var(--ink);border-radius:2px;position:relative;overflow:hidden}
+.track .seg2.done{background:var(--ink)}
+.track .seg2.on{background:repeating-linear-gradient(-45deg,var(--ink) 0 4px,var(--paper) 4px 8px);background-size:200% 100%;animation:crawl 1.2s linear infinite}
+.track .seg2.skip{border-style:dashed;border-color:var(--mist)}
+@keyframes crawl{to{background-position:-22px 0}}
+.tracklabels{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;font-size:11.5px;color:var(--mist);margin-bottom:24px}
+.tracklabels span.on{color:var(--ink);font-weight:600} .tracklabels span.done{color:var(--ink)}
+.now{font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px;min-height:30px}
+.now small{display:block;font-size:14px;font-weight:400;color:var(--graphite)}
+.logbox{margin-top:18px}
+.logbox summary{cursor:pointer;font-size:13px;font-weight:600}
+pre.log{background:var(--wash);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;height:300px;overflow:auto;font:12px/1.5 var(--mono);white-space:pre-wrap;margin:10px 0 0;color:#222}
+.errbox{border:2px solid var(--ink);border-radius:10px;padding:16px 18px;margin:18px 0;background:repeating-linear-gradient(-45deg,#fff 0 10px,#f4f4f4 10px 20px)}
+.errbox b{display:block;margin-bottom:4px}
+
+/* ---------- results ---------- */
+.proof{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:end;padding:8px 0 28px;border-bottom:2px solid var(--ink);margin-bottom:0}
+.proof .kicker{font-size:14px;color:var(--graphite);margin-bottom:8px}
+.proof .big{display:flex;align-items:baseline;gap:22px;font-weight:900;letter-spacing:-.06em;line-height:.9}
+.proof .big .from{font-size:clamp(44px,6vw,84px);color:var(--mist)}
+.proof .big .from b{position:relative;font-weight:900}
+.proof .big .from b::after{content:"";position:absolute;left:-6px;right:-6px;top:50%;border-top:4px solid var(--mist);transform:rotate(-8deg)}
+.proof .big .arrow{font-size:clamp(28px,3vw,44px);font-weight:400;color:var(--ink)}
+.proof .big .to{font-size:clamp(64px,9vw,128px)}
+.proof .big sub{font-size:.32em;letter-spacing:-.02em;vertical-align:baseline;font-weight:700;margin-left:6px}
+.proof .cap{font-size:15px;color:var(--graphite);margin-top:14px;max-width:46ch}
+.stats{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule)}
+.stats div{padding:12px 0;border-bottom:1px solid var(--rule)}
+.stats div:nth-child(odd){padding-right:16px;border-right:1px solid var(--rule)}
+.stats div:nth-child(even){padding-left:16px}
+.stats b{display:block;font-size:28px;letter-spacing:-.03em;font-weight:800;line-height:1.1}
+.stats span{font-size:12.5px;color:var(--graphite)}
+.target{font-size:13px;color:var(--graphite);margin:18px 0 0}
+
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--rule);margin:22px 0 26px;overflow-x:auto;position:sticky;top:57px;background:var(--paper);z-index:10}
+.tab{all:unset;cursor:pointer;padding:12px 14px;font-size:14px;font-weight:500;color:var(--graphite);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected=true]{color:var(--ink);border-color:var(--ink);font-weight:600}
+.tab sup{font-size:11px;margin-left:3px;color:var(--mist)}
+.tab:focus-visible{outline:2px solid var(--ink)}
+.view{animation:fade .28s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+h3.sec{font-size:18px;letter-spacing:-.015em;margin:34px 0 12px;font-weight:700}
+h3.sec:first-child{margin-top:0}
+p.sub{margin:-6px 0 16px;color:var(--graphite);font-size:14px;max-width:72ch}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12.5px;font-weight:600;color:var(--graphite);padding:8px 10px;border-bottom:1.5px solid var(--ink);white-space:nowrap}
+th.sortable{cursor:pointer} th.sortable:hover{color:var(--ink)}
+td{padding:11px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+tr.go{cursor:pointer;transition:background .15s}
+tr.go:hover td{background:var(--wash)}
+td.name{font-weight:600}
+td.num{font-variant-numeric:tabular-nums}
+
+/* status marks: shape, not color */
+.v{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;padding:3px 10px 3px 8px;border-radius:999px;border:1.5px solid var(--ink);white-space:nowrap}
+.v::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor}
+.v.ok{background:var(--ink);color:var(--paper)} .v.ok::before{background:var(--paper);border-color:var(--paper)}
+.v.bad{background:repeating-linear-gradient(-45deg,#fff 0 3px,#dcdcdc 3px 6px)} .v.bad::before{border-radius:1px;transform:rotate(45deg)}
+.v.warn{border-style:dashed}
+.v.none{border-color:var(--rule);color:var(--mist);font-weight:500} .v.none::before{border-color:var(--rule)}
+.lvl{display:inline-flex;gap:3px;vertical-align:-1px;margin-right:8px}
+.lvl i{width:9px;height:9px;border:1.5px solid var(--ink);border-radius:2px}
+.lvl i.f{background:var(--ink)}
+.chip{display:inline-block;font-size:12px;border:1px solid var(--rule);border-radius:5px;padding:1px 7px;margin:2px 4px 2px 0;white-space:nowrap}
+.bar{height:6px;background:var(--wash);border-radius:3px;overflow:hidden;width:110px;display:inline-block;vertical-align:middle;margin-right:8px}
+.bar i{display:block;height:100%;background:var(--ink)}
+
+.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.toolbar input{max-width:260px;height:36px}
+.filter{display:flex;border:1px solid var(--ink);border-radius:8px;overflow:hidden}
+.filter button{border:0;background:var(--paper);padding:7px 12px;cursor:pointer;font-size:13px;border-right:1px solid var(--ink)}
+.filter button:last-child{border-right:0}
+.filter button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+
+/* exits list on overview */
+.exits{list-style:none;margin:0;padding:0}
+.exits li{display:grid;grid-template-columns:170px 1fr auto;gap:18px;align-items:center;padding:16px 0;border-bottom:1px solid var(--rule);cursor:pointer}
+.exits li:hover .ename{text-decoration:underline}
+.exits .ename{font-weight:700;font-size:16px}
+.exits .what{font-size:14px}
+.exits .what small{display:block;color:var(--graphite);font-size:13px}
+.minis{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1.5px solid var(--ink);margin-top:34px}
+.minis > div{padding:16px 18px 6px 0;border-right:1px solid var(--rule)}
+.minis > div + div{padding-left:18px}
+.minis > div:last-child{border-right:0}
+.minis b{display:block;font-size:15px;margin-bottom:4px}
+.minis p{margin:0 0 10px;font-size:13.5px;color:var(--graphite)}
+.linkbtn{all:unset;cursor:pointer;font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+/* capsules */
+.capwrap{display:grid;grid-template-columns:210px 1fr;gap:32px}
+.caplist{list-style:none;margin:0;padding:0;position:sticky;top:120px;align-self:start}
+.caplist button{all:unset;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;padding:11px 12px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px}
+.caplist button:hover{background:var(--wash)}
+.caplist button[aria-current=true]{background:var(--ink);color:var(--paper)}
+.caplist button:focus-visible{outline:2px solid var(--ink)}
+.caplist .mini{width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor}
+.caplist .mini.ok{background:currentColor}
+.caplist .mini.warn{border-style:dashed}
+.caphead{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:6px}
+.caphead h2{font-size:34px;letter-spacing:-.04em;margin:0;font-weight:800;font-family:var(--mono);font-weight:500}
+.caphead .meaning{color:var(--graphite);font-size:14px;margin:6px 0 0}
+.downloads{display:flex;gap:8px;flex-wrap:wrap}
+.cols{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:32px;margin-top:22px}
+.col{padding:4px 0 0 20px;min-width:0}
+.usage td.code{word-break:break-word}
+.usage td:first-child{white-space:nowrap;word-break:normal}
+.col.proven{border-left:3px solid var(--ink)}
+.col.suggested{border-left:3px dashed var(--ink)}
+.col > h4{margin:0 0 2px;font-size:16px;font-weight:700}
+.col > .who{font-size:12.5px;color:var(--graphite);margin-bottom:16px}
+.col h5{font-size:13px;font-weight:700;margin:20px 0 8px}
+.col.suggested .quote{font-size:15px;line-height:1.6}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13.5px}
+.kv dt{color:var(--graphite)} .kv dd{margin:0}
+ul.plain{margin:0;padding-left:18px} ul.plain li{margin:4px 0;font-size:13.5px}
+ol.steps{margin:0;padding-left:20px} ol.steps li{margin:6px 0;font-size:14px}
+.ind{display:grid;grid-template-columns:28px 1fr;gap:4px 10px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.ind .sev{font-family:var(--mono);font-size:11px;padding-top:3px;letter-spacing:-1px}
+.ind b{font-size:13.5px} .ind p{margin:2px 0 0;font-size:13px;color:var(--graphite)} .ind code{color:var(--graphite);font-size:11.5px;word-break:break-word}
+.usage td{font-size:12.5px;padding:7px 8px}
+.attempt{border:1px solid var(--rule);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.attempt .ah{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:600;font-size:14px}
+.beforeafter{display:flex;align-items:baseline;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.02em;white-space:nowrap}
+.beforeafter .a{color:var(--mist);text-decoration:line-through;text-decoration-thickness:2px;font-weight:600}
+.gaps li{font-size:13.5px}
+
+/* diff */
+.diffwrap{position:relative;margin-top:10px}
+.diffwrap .copy{position:absolute;right:10px;top:10px}
+pre.diff{margin:0;border:1px solid var(--ink);border-radius:10px;padding:14px 0;overflow:auto;max-height:460px;font:12.5px/1.6 var(--mono);background:var(--paper)}
+pre.diff span{display:block;padding:0 16px;white-space:pre}
+pre.diff .f{font-weight:600;background:var(--wash);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:6px 0}
+pre.diff .h{color:var(--mist)}
+pre.diff .a{background:#ececec;font-weight:600}
+pre.diff .a::first-letter{font-weight:800}
+pre.diff .d{color:var(--mist);text-decoration:line-through}
+
+/* forecast */
+.fc td,.fc th{text-align:center} .fc td:first-child,.fc th:first-child{text-align:left}
+.cell{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.cell i{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:3px}
+.cell.ok i{background:var(--paper)} .cell.ok{font-weight:500;color:var(--graphite)}
+.cell.deprecated i{background:repeating-linear-gradient(-45deg,var(--ink) 0 2px,#fff 2px 5px)}
+.cell.broken i,.cell.install_failed i{background:var(--ink)}
+.cell.na{color:var(--mist);font-weight:400}
+.fc .err{display:block;font-size:11.5px;color:var(--graphite);font-weight:400;font-family:var(--mono);max-width:280px;margin:4px auto 0;white-space:normal}
+
+.panel{border:1px solid var(--ink);border-radius:12px;padding:22px 24px;max-width:760px}
+.row2{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+pre.out{background:var(--wash);border-radius:8px;padding:12px 14px;font:12.5px/1.55 var(--mono);white-space:pre-wrap;margin:16px 0 0}
+.files{columns:2;column-gap:40px;list-style:none;padding:0;margin:0}
+.files li{padding:6px 0;border-bottom:1px solid var(--rule);break-inside:avoid;font-family:var(--mono);font-size:13px}
+
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:all .3s var(--ease);z-index:50;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:1100px){.cols,.capwrap{grid-template-columns:1fr}.caplist{position:static;display:flex;flex-wrap:wrap;gap:6px}.caplist button{width:auto}.proof{grid-template-columns:1fr}}
+@media (max-width:860px){.shell{grid-template-columns:1fr}.rail{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--rule)}.main{padding:24px 18px}.flow{grid-template-columns:1fr 1fr}.minis{grid-template-columns:1fr}.minis>div{border-right:0;padding-left:0 !important}.exits li{grid-template-columns:1fr}.top .tagline,.legend{display:none}.files{columns:1}.track,.tracklabels{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="mark"><i aria-hidden="true"></i>depexit</div>
+  <div class="tagline">Dependency exits, planned by Gemma 4 and proven by running the tests.</div>
+  <div class="right">
+    <div class="legend" aria-label="Legend">
+      <span><em class="solid"></em>Proven by running</span>
+      <span><em class="dash"></em>Suggested by AI</span>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="rail" aria-label="Run settings">
+    <form id="runform" novalidate>
+      <div class="field">
+        <label for="target">Repository</label>
+        <input type="text" id="target" class="mono" value="https://github.com/rishrek/LinkWatch" autocomplete="off" spellcheck="false">
+        <div class="hint">A git URL or a folder on this computer.</div>
+      </div>
+
+      <div class="field">
+        <span class="lbl" id="presetlbl">What to run</span>
+        <div class="seg" role="group" aria-labelledby="presetlbl" id="presets">
+          <button type="button" data-p="quick">Quick check</button>
+          <button type="button" data-p="full" aria-pressed="true">Full analysis</button>
+          <button type="button" data-p="custom">Pick</button>
+        </div>
+        <div class="seg-desc" id="presetdesc"></div>
+        <div class="field hidden" id="onlywrap" style="margin:10px 0 0">
+          <input type="text" id="only" class="mono" placeholder="jinja2, nose, appdirs" autocomplete="off" spellcheck="false" aria-label="Dependencies to plan exits for">
+          <div class="hint">Comma-separated package names. Leave empty for every risky one.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="python">Test on Python</label>
+        <select id="python"><option>3.12</option><option>3.13</option><option>3.11</option></select>
+      </div>
+
+      <div class="field">
+        <span class="lbl">Forecast future Python</span>
+        <div class="checks" id="forecast">
+          <label class="chk"><input type="checkbox" value="3.13" checked>3.13</label>
+          <label class="chk"><input type="checkbox" value="3.14" checked>3.14</label>
+        </div>
+      </div>
+
+      <label class="toggle"><span><b>Gemma 4 plans the fixes</b><small id="aihint">Proposes replacements and code changes</small></span>
+        <span class="sw"><input type="checkbox" id="use_ai" checked><span></span></span></label>
+      <label class="toggle"><span><b>Auto-Organizer</b><small>Cleans and syncs the dependency files</small></span>
+        <span class="sw"><input type="checkbox" id="organize" checked><span></span></span></label>
+
+      <div class="field" style="margin-top:16px" id="keyfield">
+        <span class="lbl">Gemma key</span>
+        <div class="keystate"><span class="dot" id="keydot"></span><span id="keytext">Checking…</span></div>
+        <div class="keyrow" id="keyrow">
+          <input type="password" id="apikey" placeholder="Paste your Google AI Studio key" autocomplete="off" aria-label="Gemma API key">
+          <button type="button" class="btn sm" id="savekey">Use key</button>
+        </div>
+        <label class="chk" style="margin-top:8px;display:inline-flex"><input type="checkbox" id="remember" checked>Remember on this computer</label>
+      </div>
+
+      <details class="adv">
+        <summary>Advanced</summary>
+        <div class="grid2">
+          <div><label class="lbl" for="attempts">Repair rounds</label><input type="number" id="attempts" min="1" max="4" value="2"></div>
+          <div><label class="lbl" for="maxdeps">Max exits</label><input type="number" id="maxdeps" min="1" max="20" value="20"></div>
+        </div>
+        <div style="margin-top:10px"><label class="lbl" for="model">Gemma model</label>
+          <select id="model"><option value="">gemma-4-26b-a4b-it (fast)</option><option>gemma-4-31b-it</option></select></div>
+      </details>
+
+      <button class="btn primary" id="go" type="submit">Run analysis</button>
+      <div id="formerr" class="errbox hidden" role="alert"></div>
+    </form>
+
+    <section class="history">
+      <h3>Past runs</h3>
+      <ul class="hist" id="hist"><li class="faint small" style="padding:10px 0">No runs yet.</li></ul>
+    </section>
+  </aside>
+
+  <main class="main" id="main">
+    <!-- idle -->
+    <section class="idle" id="idle">
+      <h1>Find the parts that are rotting. Replace them. Prove it.</h1>
+      <p class="lede">DepExit reads a Python project, scores every dependency by real evidence, lets Gemma 4 plan a way out, and then installs and tests the change to show whether it actually works.</p>
+      <ol class="flow">
+        <li><span class="n">1</span><b>Scan</b><span>Find every package and where the code uses it.</span></li>
+        <li><span class="n">2</span><b>Baseline</b><span>Install the project as-is and run its tests.</span></li>
+        <li><span class="n">3</span><b>Score</b><span>Rate risk from PyPI data and real failures.</span></li>
+        <li class="ai"><span class="n">4</span><b>Plan</b><span>Gemma 4 proposes the replacement and edits.</span></li>
+        <li><span class="n">5</span><b>Prove</b><span>Install the fix, rerun the tests, compare.</span></li>
+      </ol>
+    </section>
+
+    <!-- running -->
+    <section class="hidden" id="running" aria-live="polite">
+      <div class="runhead"><h2 id="runtitle">Analysing</h2><span class="elapsed" id="elapsed">0:00</span></div>
+      <div class="track" id="track"></div>
+      <div class="tracklabels" id="tracklabels"></div>
+      <div class="now" id="now">Starting…<small></small></div>
+      <div id="runerr" class="errbox hidden" role="alert"></div>
+      <details class="logbox" id="logbox" open><summary>Live log</summary><pre class="log" id="log"></pre></details>
+    </section>
+
+    <!-- results -->
+    <section class="hidden" id="results"></section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const api = async (path, body) => {
+  const r = await fetch(path, body === undefined ? {} : {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+  let j = null; try { j = await r.json(); } catch(e) {}
+  return {ok:r.ok, status:r.status, data:j};
+};
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),3200); }
+
+const STAGES = [
+  ["1. Target","Download","Downloading the repository"],
+  ["2. Static scan","Scan","Reading the dependency files and the code"],
+  ["3. Baseline","Baseline","Installing the original project and running its tests"],
+  ["4. Risk","Score","Scoring every dependency with PyPI data"],
+  ["Python forecast","Forecast","Trying the original project on future Python versions"],
+  ["5. Migration","Plan + prove","Gemma proposes fixes; each one is installed and tested"],
+  ["6. Combined","Combine","Applying every verified fix together and testing again"],
+  ["Auto-Organizer","Organize","Rebuilding the dependency files and testing them"],
+  ["7. Writing","Capsules","Writing the Dependency Exit Capsules"],
+];
+const PRESETS = {
+  quick:{desc:"One package (jinja2), no forecast. About 2 minutes.", only:"jinja2", forecast:false},
+  full:{desc:"Every risky package, forecast and organizer. 10 to 15 minutes.", only:"", forecast:true},
+  custom:{desc:"Choose which packages get an exit plan.", only:null, forecast:true},
+};
+let preset = "full", since = 0, pollT = null, tickT = null, startedAt = null, stage = -1, curLine = "";
+let DATA = null, TAB = "overview", DEP = null, riskFilter = "all", riskQuery = "", riskSort = "score";
+
+/* ---------- rail ---------- */
+function setPreset(p){
+  preset = p;
+  $$("#presets button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.p === p)));
+  $("#presetdesc").textContent = PRESETS[p].desc;
+  $("#onlywrap").classList.toggle("hidden", p !== "custom");
+  $$("#forecast input").forEach(i => i.checked = PRESETS[p].forecast);
+}
+$$("#presets button").forEach(b => b.onclick = () => setPreset(b.dataset.p));
+setPreset("full");
+
+function keyState(has){
+  $("#keydot").classList.toggle("on", has);
+  $("#keytext").textContent = has ? "Key is set. Gemma is ready." : "No key yet. Get one free at aistudio.google.com/apikey";
+  $("#keyrow").classList.toggle("hidden", has && !$("#keyrow").dataset.force);
+  $("#keytext").onclick = has ? () => { $("#keyrow").dataset.force = "1"; $("#keyrow").classList.remove("hidden"); } : null;
+  $("#keytext").style.cursor = has ? "pointer" : "";
+  $("#keytext").title = has ? "Click to change the key" : "";
+}
+$("#savekey").onclick = async () => {
+  const key = $("#apikey").value.trim();
+  if(!key){ toast("Paste a key first."); return; }
+  const r = await api("/api/key", {key, remember:$("#remember").checked});
+  if(r.ok){ $("#apikey").value=""; delete $("#keyrow").dataset.force; keyState(true); toast(r.data.saved ? "Key saved on this computer." : "Key set for this session."); }
+  else toast(r.data?.error || "Could not set the key.");
+};
+$("#use_ai").onchange = () => { $("#keyfield").style.opacity = $("#use_ai").checked ? 1 : .4; };
+
+async function loadHistory(){
+  const r = await api("/api/runs"); const runs = r.data || [];
+  const cur = DATA?.run_id;
+  $("#hist").innerHTML = runs.length ? runs.map(x => `<li class="${x.id===cur?'cur':''}"><button data-id="${esc(x.id)}">
+      <div class="h1">${esc((x.target||"").replace(/^https?:\/\/(www\.)?github\.com\//,""))}</div>
+      <div class="h2">${esc(fmtWhen(x.finished))}. ${x.verified} verified of ${x.scanned} scanned${x.ai_model?"":" (no AI)"}</div></button></li>`).join("")
+    : `<li class="faint small" style="padding:10px 0">No runs yet.</li>`;
+  $$("#hist button").forEach(b => b.onclick = async () => {
+    const r = await api("/api/load", {id:b.dataset.id});
+    if(!r.ok){ toast(r.data?.error || "Could not open that run."); return; }
+    DATA = r.data; TAB = "overview"; DEP = null; showResults(); loadHistory();
+  });
+}
+function fmtWhen(iso){
+  if(!iso) return "";
+  const d = new Date(iso); if(isNaN(d)) return iso;
+  return d.toLocaleString([], {day:"numeric", month:"short", hour:"2-digit", minute:"2-digit"});
+}
+
+/* ---------- run ---------- */
+$("#runform").onsubmit = async e => {
+  e.preventDefault();
+  $("#formerr").classList.add("hidden");
+  const only = preset === "custom" ? $("#only").value : PRESETS[preset].only;
+  const body = {
+    target: $("#target").value, python: $("#python").value,
+    forecast: $$("#forecast input:checked").map(i => i.value).join(","),
+    only, use_ai: $("#use_ai").checked, organize: $("#organize").checked,
+    attempts: $("#attempts").value, max_deps: $("#maxdeps").value, model: $("#model").value,
+  };
+  const r = await api("/api/run", body);
+  if(!r.ok){ $("#formerr").innerHTML = `<b>Can't start yet</b>${esc(r.data?.error || "Something went wrong.")}`; $("#formerr").classList.remove("hidden"); return; }
+  since = 0; stage = -1; $("#log").textContent = ""; $("#runerr").classList.add("hidden");
+  showRunning(); poll();
+};
+
+function showRunning(){
+  $("#idle").classList.add("hidden"); $("#results").classList.add("hidden"); $("#running").classList.remove("hidden");
+  $("#go").disabled = true; $("#go").textContent = "Running…";
+  drawTrack();
+}
+function drawTrack(){
+  $("#track").innerHTML = STAGES.map((s,i) => `<div class="seg2 ${i<stage?'done':''} ${i===stage?'on':''}"></div>`).join("");
+  $("#tracklabels").innerHTML = STAGES.map((s,i) => `<span class="${i<stage?'done':''} ${i===stage?'on':''}">${s[1]}</span>`).join("");
+  const s = STAGES[Math.max(stage,0)];
+  $("#now").innerHTML = `${esc(stage<0 ? "Starting…" : s[2])}<small>${esc(curLine)}</small>`;
+}
+function tick(){
+  if(!startedAt) return;
+  const s = Math.max(0, Math.round(Date.now()/1000 - startedAt));
+  $("#elapsed").textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;
+}
+async function poll(){
+  clearTimeout(pollT);
+  const r = await api("/api/state?since="+since); const s = r.data;
+  if(!s) { pollT = setTimeout(poll, 1500); return; }
+  if(s.started){ startedAt = s.started + (Date.now()/1000 - s.now); clearInterval(tickT); tickT = setInterval(tick, 500); tick(); }
+  if(s.log.length){
+    const log = $("#log");
+    for(const line of s.log){
+      STAGES.forEach(([k],i) => { if(line.includes(k) && line.includes("─") && i > stage) stage = i; });
+      const t = line.trim();
+      if(t && !t.startsWith("─") && !/^[┃┏┗┡└│]/.test(t)) curLine = t.replace(/\[\/?[a-z ]+\]/g,"").slice(0,140);
+      log.textContent += line + "\n";
+    }
+    since = s.n; log.scrollTop = log.scrollHeight; drawTrack();
+  }
+  if(s.running){ $("#runtitle").textContent = "Analysing " + shortTarget(s.params?.target); pollT = setTimeout(poll, 900); return; }
+  clearInterval(tickT);
+  $("#go").disabled = false; $("#go").textContent = "Run analysis";
+  if(s.error){
+    $("#runerr").innerHTML = `<b>The run stopped</b>${esc(s.error)}`; $("#runerr").classList.remove("hidden");
+    $("#logbox").open = true; return;
+  }
+  if(s.done && s.out){
+    const res = await api("/api/result");
+    if(res.data){ DATA = res.data; TAB = "overview"; DEP = null; showResults(); loadHistory(); toast("Analysis finished."); }
+  }
+}
+const shortTarget = t => (t||"").replace(/^https?:\/\/(www\.)?github\.com\//,"").replace(/\.git$/,"");
+
+/* ---------- helpers ---------- */
+function counts(c){
+  if(!c) return "–";
+  const p = c.passed||0, total = Object.values(c).reduce((a,b)=>a+b,0);
+  if(c.collection_error) return "tests crash";
+  return `${p}/${total} passing`;
+}
+function frac(c){ if(!c) return null; const total = Object.values(c).reduce((a,b)=>a+b,0); return {p:c.passed||0, t:total, crash:!!c.collection_error}; }
+const VNAME = {verified_improvement:"Verified, improved", verified_no_regression:"Verified, nothing broke", regression:"Broke tests",
+  install_failed:"Install failed", not_applied:"Edit didn't apply", incomplete:"Old package still used", kept:"AI kept it",
+  ai_failed:"AI call failed", not_attempted:"Not planned"};
+function verdict(v){
+  if(!v) return `<span class="v none">Not planned</span>`;
+  const cls = v.startsWith("verified") ? "ok" : (["regression","install_failed"].includes(v) ? "bad" : (["kept","not_attempted"].includes(v) ? "none" : "warn"));
+  return `<span class="v ${cls}">${esc(VNAME[v]||v)}</span>`;
+}
+function level(l){ const n={high:3,medium:2,low:1,none:0}[l]??0; return `<span class="lvl" title="${esc(l)} risk">${[0,1,2].map(i=>`<i class="${i<n?'f':''}"></i>`).join("")}</span>${esc(l)}`; }
+function diff(text){
+  if(!text) return `<p class="muted small">No file changes.</p>`;
+  const html = text.split("\n").map(l => { const e = esc(l) || " ";
+    if(l.startsWith("--- ")) return "";
+    if(l.startsWith("+++ ")) return `<span class="f">${esc(l.slice(6))}</span>`;
+    if(l.startsWith("@@")) return `<span class="h">${e}</span>`;
+    if(l.startsWith("+")) return `<span class="a">${e}</span>`;
+    if(l.startsWith("-")) return `<span class="d">${e}</span>`;
+    return `<span>${e}</span>`; }).join("");
+  const id = "d"+Math.random().toString(36).slice(2);
+  window._diffs = window._diffs || {}; window._diffs[id] = text;
+  return `<div class="diffwrap"><button class="btn sm copy" data-copy="${id}">Copy patch</button><pre class="diff">${html}</pre></div>`;
+}
+function bindCopies(){
+  $$("[data-copy]").forEach(b => b.onclick = async () => {
+    try { await navigator.clipboard.writeText(window._diffs[b.dataset.copy]); toast("Patch copied."); } catch(e){ toast("Copy isn't allowed here; download the .patch file instead."); }
+  });
+}
+const codeTicks = t => esc(t).replace(/`([^`]+)`/g, "<code>$1</code>");
+const list = (items, empty="None.") => { items=(items||[]).filter(Boolean); return items.length ? `<ul class="plain">${items.map(i=>`<li>${esc(i)}</li>`).join("")}</ul>` : `<p class="muted small">${esc(empty)}</p>`; };
+const fileUrl = p => "/files/" + p.split("/").map(encodeURIComponent).join("/");
+
+/* ---------- results ---------- */
+function headline(){
+  const base = Object.values(DATA.baseline||{})[0] || {};
+  const before = frac(base.tests);
+  let after = null, how = "";
+  const comb = DATA.combined_migration;
+  if(comb){ after = frac(Object.values(comb.comparison.routes)[0].tests_after); how = `after all ${comb.dependencies.length} verified exits were applied together`; }
+  else {
+    const one = Object.values(DATA.capsule_docs||{}).find(c => (c.verdict.value||"").startsWith("verified"));
+    if(one){ const a = one.observed.attempts.at(-1); after = frac(Object.values(a.comparison.routes)[0].tests_after); how = `after the verified ${one.dependency.name} exit`; }
+  }
+  return {before, after, how};
+}
+function showResults(){
+  $("#idle").classList.add("hidden"); $("#running").classList.add("hidden");
+  const R = $("#results"); R.classList.remove("hidden");
+  const deps = DATA.all_dependencies||[];
+  const verified = deps.filter(d => (d.verdict||"").startsWith("verified")).length;
+  const high = deps.filter(d => d.level === "high").length;
+  const {before, after, how} = headline();
+  const n = c => c ? (c.crash ? "×" : c.p) : "–";
+  const big = after
+    ? `<div class="big"><span class="from"><b>${n(before)}</b><sub>/${before?.t??""}</sub></span><span class="arrow" aria-label="became">→</span><span class="to">${n(after)}<sub>/${after.t}</sub></span></div>
+       <p class="cap">Tests passing before and ${esc(how)}. Every number here comes from a real install and test run.</p>`
+    : `<div class="big"><span class="to">${n(before)}<sub>/${before?.t??""}</sub></span></div>
+       <p class="cap">Tests passing on the original project. ${DATA.run.ai_model ? "No exit was verified in this run." : "Gemma was off, so this run only measured the evidence."}</p>`;
+  const tabs = [["overview","Overview"],["risk","Risk map",deps.length],["capsules","Exit capsules",Object.keys(DATA.capsule_docs||{}).length]];
+  if(DATA.forecast) tabs.push(["forecast","Python forecast"]);
+  if(DATA.organizer) tabs.push(["organizer","Organizer"]);
+  tabs.push(["branch","Git branch"],["files","Files"]);
+  R.innerHTML = `
+    <div class="proof">
+      <div><div class="kicker">${esc(shortTarget(DATA.run.target))}, Python ${esc(DATA.run.python)}</div>${big}</div>
+      <div class="stats">
+        <div><b>${deps.length}</b><span>dependencies scanned</span></div>
+        <div><b>${high}</b><span>high risk</span></div>
+        <div><b>${verified}</b><span>exits verified by running</span></div>
+        <div><b>${DATA.run.ai_calls||0}</b><span>${DATA.run.ai_model ? "Gemma 4 calls" : "AI calls (Gemma off)"}</span></div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist">${tabs.map(([k,l,c]) => `<button class="tab" role="tab" data-t="${k}" aria-selected="${k===TAB}">${l}${c!==undefined?`<sup>${c}</sup>`:""}</button>`).join("")}</nav>
+    <div id="view"></div>`;
+  $$(".tab").forEach(t => t.onclick = () => go(t.dataset.t));
+  renderView();
+}
+function go(t, dep){ TAB = t; if(dep) DEP = dep; $$(".tab").forEach(x => x.setAttribute("aria-selected", String(x.dataset.t===t))); renderView(); }
+function renderView(){
+  const v = $("#view"); v.classList.remove("view"); void v.offsetWidth; v.classList.add("view");
+  ({overview:vOverview, risk:vRisk, capsules:vCapsules, forecast:vForecast, organizer:vOrganizer, branch:vBranch, files:vFiles}[TAB] || vOverview)();
+  bindCopies();
+}
+
+function vOverview(){
+  const caps = DATA.capsule_docs||{};
+  const rows = Object.values(caps).map(c => {
+    const ai = c.ai_generated, rep = ai.proposed_replacement||{};
+    const a = c.observed.attempts.at(-1), r = a?.comparison ? Object.values(a.comparison.routes)[0] : null;
+    const target = rep.requirement || rep.package;
+    const what = !ai.action ? `<span class="muted">No AI plan</span>`
+      : ai.action === "replace" ? `Replace with <code>${esc(target||"?")}</code>`
+      : ai.action === "upgrade" ? `Upgrade to <code>${esc(target||"?")}</code>`
+      : ai.action === "remove" ? `Remove it${rep.package && rep.package !== c.dependency.name ? `; use <code>${esc(rep.package)}</code> instead` : ""}`
+      : ai.action === "declare" ? `Declare it in the dependency files`
+      : `Keep it for now`;
+    const tests = r ? `${counts(r.tests_before)}, then ${counts(r.tests_after)}` : "Not tested";
+    return `<li data-dep="${esc(c.dependency.name)}"><span class="ename code">${esc(c.dependency.name)}</span><span class="what">${what}<small>${esc(tests)}</small></span>${verdict(c.verdict.value)}</li>`;
+  }).join("");
+  const fc = DATA.forecast, org = DATA.organizer;
+  let fcLine = "Not run.";
+  if(fc){ const vs = Object.entries(fc.versions); const worst = vs.find(([,x]) => x.tests?.collection_error) || vs.find(([,x]) => x.tests?.failed);
+    fcLine = worst ? `On Python ${worst[1].python} the original project ${worst[1].tests.collection_error ? "crashes before its tests can run" : `passes ${counts(worst[1].tests)}`}.` : "The original project behaves the same on every version tried."; }
+  const orgLine = org ? `${org.actions.filter(a=>a.action!=="flag_conflict").length} changes to the dependency files, tested: ${VNAME[org.verdict]||org.verdict}.` : "Not run.";
+  $("#view").innerHTML = `
+    <h3 class="sec">What DepExit did</h3>
+    <p class="sub">Each row is one risky package. Gemma suggested the plan; the verdict comes only from installing it and running the tests.</p>
+    ${rows ? `<ul class="exits">${rows}</ul>` : `<p class="muted">No package met the risk threshold for an exit plan.</p>`}
+    <div class="minis">
+      <div><b>Python forecast</b><p>${esc(fcLine)}</p>${fc?`<button class="linkbtn" data-go="forecast">See every version</button>`:""}</div>
+      <div><b>Auto-Organizer</b><p>${esc(orgLine)}</p>${org?`<button class="linkbtn" data-go="organizer">See the cleaned files</button>`:""}</div>
+      <div><b>Ship it</b><p>Put the verified changes and the capsules on a new git branch, ready for review.</p><button class="linkbtn" data-go="branch">Create a branch</button></div>
+    </div>`;
+  $$(".exits li").forEach(li => li.onclick = () => go("capsules", li.dataset.dep));
+  $$("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+}
+
+function vRisk(){
+  const all = DATA.all_dependencies||[];
+  const max = Math.max(1, ...all.map(d => d.score));
+  let rows = all.filter(d => (riskFilter === "all" || d.level === riskFilter) && (!riskQuery || d.name.includes(riskQuery.toLowerCase())));
+  rows = [...rows].sort((a,b) => riskSort === "name" ? a.name.localeCompare(b.name) : b.score - a.score);
+  $("#view").innerHTML = `
+    <p class="sub">Every score comes from evidence: the dependency files, PyPI release data, a scan of the code, and real installs and test runs. No AI is involved here.</p>
+    <div class="toolbar">
+      <div class="filter" role="group" aria-label="Filter by risk">${["all","high","medium","low"].map(f => `<button data-f="${f}" aria-pressed="${f===riskFilter}">${f[0].toUpperCase()+f.slice(1)}</button>`).join("")}</div>
+      <input type="text" id="rq" placeholder="Search packages" value="${esc(riskQuery)}" aria-label="Search packages">
+    </div>
+    <table>
+      <thead><tr><th class="sortable" data-s="name">Package</th><th>Risk</th><th class="sortable" data-s="score">Score</th><th>Why</th><th>Exit</th></tr></thead>
+      <tbody>${rows.map(d => `<tr class="${DATA.capsule_docs[d.name]?'go':''}" data-dep="${esc(d.name)}">
+        <td class="name code">${esc(d.name)}</td><td>${level(d.level)}</td>
+        <td class="num"><span class="bar"><i style="width:${100*d.score/max}%"></i></span>${d.score}</td>
+        <td>${d.indicators.map(i => `<span class="chip">${esc(i.replace(/_/g," "))}</span>`).join("") || '<span class="faint">Nothing found</span>'}</td>
+        <td>${verdict(d.verdict)}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">No packages match.</td></tr>`}</tbody>
+    </table>`;
+  $$("[data-f]").forEach(b => b.onclick = () => { riskFilter = b.dataset.f; vRisk(); });
+  $$("[data-s]").forEach(b => b.onclick = () => { riskSort = b.dataset.s; vRisk(); });
+  const rq = $("#rq"); rq.oninput = () => { riskQuery = rq.value; const pos = rq.selectionStart; vRisk(); const n = $("#rq"); n.focus(); n.setSelectionRange(pos,pos); };
+  $$("tr.go").forEach(r => r.onclick = () => go("capsules", r.dataset.dep));
+}
+
+function vCapsules(){
+  const names = Object.keys(DATA.capsule_docs||{});
+  if(!names.length){ $("#view").innerHTML = `<p class="muted">No package met the risk threshold, so no capsule was written.</p>`; return; }
+  if(!DEP || !DATA.capsule_docs[DEP]) DEP = names[0];
+  const c = DATA.capsule_docs[DEP], o = c.observed, ai = c.ai_generated, rep = ai.proposed_replacement||{}, review = ai.review||{};
+  const mk = v => v?.startsWith("verified") ? "ok" : (["kept","not_attempted",null,undefined].includes(v) ? "" : "warn");
+  const usage = [...o.usage.imports.map(i => [i.file,i.line,"import"+(i.lazy?" (inside a function)":"")+(i.side_effect_only?" (side effect)":""),i.statement]),
+                 ...o.usage.usages.map(u => [u.file,u.line,u.kind+(u.private_api?", private API":""),u.code]),
+                 ...o.usage.non_python_references.map(t => [t.file,t.line,"non-Python file",t.code])]
+    .filter((u,i,arr) => arr.findIndex(x => x[0]===u[0] && x[1]===u[1] && x[2]===u[2]) === i)
+    .sort((a,b) => a[0].localeCompare(b[0]) || a[1]-b[1]);
+  const attempts = o.attempts.map(a => {
+    if(!a.comparison) return `<div class="attempt"><div class="ah">Attempt ${a.attempt}<span class="v none">${esc(a.skipped||"Not run")}</span></div></div>`;
+    const r = Object.entries(a.comparison.routes);
+    return `<div class="attempt"><div class="ah">Attempt ${a.attempt}${verdict(a.verdict)}</div>
+      ${r.map(([route,x]) => `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:6px 0">
+        <span class="small muted">Installed from ${route === "requirements" ? "requirements files" : "pyproject.toml"}</span>
+        <span class="beforeafter"><span class="a">${esc(counts(x.tests_before))}</span><span>${esc(counts(x.tests_after))}</span></span></div>
+        ${x.fixed.length ? `<div class="small">Fixed: ${x.fixed.map(t=>`<code>${esc(t.split("::").pop())}</code>`).join(", ")}</div>` : ""}
+        ${x.regressed.length ? `<div class="small"><b>Broke:</b> ${x.regressed.map(t=>`<code>${esc(t.split("::").pop())}</code>`).join(", ")}</div>` : ""}`).join("")}
+      ${a.apply.errors.length ? `<div class="small" style="margin-top:8px"><b>Not applied:</b> ${a.apply.errors.map(esc).join("; ")}</div>` : ""}
+      ${a.comparison.residual_references.length ? `<div class="small" style="margin-top:8px"><b>Still referenced:</b> ${a.comparison.residual_references.map(esc).join("; ")}</div>` : ""}
+    </div>`; }).join("") || `<p class="muted small">No change was tested${ai.enabled ? "" : " (Gemma was off)"}.</p>`;
+  const last = o.attempts.at(-1);
+  const base = "dependencies/" + c.dependency.name;
+  const hasPatch = DATA.files.includes(base + ".patch");
+  $("#view").innerHTML = `<div class="capwrap">
+    <ul class="caplist">${names.map(n => { const v = DATA.capsule_docs[n].verdict.value; return `<li><button data-n="${esc(n)}" aria-current="${n===DEP}"><span class="code">${esc(n)}</span><span class="mini ${mk(v)}"></span></button></li>`; }).join("")}</ul>
+    <div>
+      <div class="caphead">
+        <div><h2>${esc(c.dependency.name)}</h2><p class="meaning">${verdict(c.verdict.value)}&nbsp; ${esc(c.verdict.meaning)}</p></div>
+        <div class="downloads">
+          <a class="btn sm" href="${fileUrl(base+".md")}" target="_blank" rel="noopener">Open capsule</a>
+          <a class="btn sm" href="${fileUrl(base+".json")}" download>JSON</a>
+          ${hasPatch ? `<a class="btn sm" href="${fileUrl(base+".patch")}" download>Patch</a>` : ""}
+        </div>
+      </div>
+      <div class="cols">
+        <section class="col proven">
+          <h4>Proven by running</h4><div class="who">Measured by DepExit: files, PyPI, code scan, installs, tests</div>
+          <dl class="kv">
+            <dt>Installed</dt><dd><code>${esc(c.dependency.installed_version||"–")}</code></dd>
+            <dt>Latest</dt><dd><code>${esc(c.dependency.latest_version||"–")}</code> <span class="muted small">released ${esc((o.pypi.latest_release_date||"").slice(0,10)||"–")}</span></dd>
+            <dt>Declared in</dt><dd>${o.declarations.map(e => `<code>${esc(e.file)}:${e.line}</code> <code>${esc(e.raw)}</code>`).join("<br>") || "<b>Nowhere</b>"}</dd>
+          </dl>
+          <h5>Why it's risky</h5>
+          ${o.risk.indicators.map(i => `<div class="ind"><span class="sev">${"■".repeat(i.severity)}${"□".repeat(3-i.severity)}</span><div><b>${codeTicks(i.detail)}</b>${i.evidence?`<p><code>${esc(String(i.evidence).slice(0,220))}</code></p>`:""}</div></div>`).join("") || `<p class="muted small">No indicators.</p>`}
+          <h5>Where the code uses it</h5>
+          ${usage.length ? `<table class="usage"><tbody>${usage.map(u => `<tr><td class="code">${esc(u[0])}:${u[1]}</td><td>${esc(u[2])}</td><td class="code">${esc(u[3])}</td></tr>`).join("")}</tbody></table>` : `<p class="muted small">Not referenced in the code.</p>`}
+          <h5>Test results</h5>${attempts}
+          <h5>Gaps seen in the runs</h5>${list(o.compatibility_gaps, "None seen in the checks that ran.")}
+        </section>
+        <section class="col suggested">
+          <h4>Suggested by Gemma 4</h4><div class="who">${esc(ai.model || "AI was off for this run")}. A suggestion, not proof.</div>
+          ${!ai.enabled ? `<p class="muted">Turn Gemma on to get a replacement plan.</p>` : (ai.error && !ai.action) ? `<p><b>The Gemma call failed.</b> ${esc(ai.error)}</p>` : `
+          <p class="quote">${esc(ai.assessment)}</p>
+          <dl class="kv"><dt>Plan</dt><dd><b>${esc(ai.action)}</b> ${rep.package ? `<code>${esc(rep.requirement || rep.package)}</code>` : ""}</dd>${rep.why ? `<dt>Why</dt><dd>${esc(rep.why)}</dd>` : ""}</dl>
+          <h5>Migration steps</h5><ol class="steps">${(ai.migration_steps||[]).map(s => `<li>${esc(s)}</li>`).join("") || "<li class='muted'>None given.</li>"}</ol>
+          <h5>Tests it suggests</h5>${list(ai.suggested_tests)}
+          <h5>Its review of the results${review.confidence ? `, ${esc(review.confidence)} confidence` : ""}</h5>
+          ${review.summary ? `<p class="small">${esc(review.summary)}</p>` : ""}${list(review.compatibility_gaps, "No review.")}
+          <h5>Open concerns</h5>${list([...(ai.risks||[]), ...(review.unresolved_risks||[])])}`}
+        </section>
+      </div>
+      <h3 class="sec">The change that was tested</h3>
+      ${diff(last?.diff)}
+      <details class="adv"><summary>Limits of this check</summary>${list(c.limitations)}</details>
+    </div></div>`;
+  $$(".caplist button").forEach(b => b.onclick = () => { DEP = b.dataset.n; vCapsules(); bindCopies(); window.scrollTo({top: $("#view").offsetTop - 120, behavior: "smooth"}); });
+}
+
+function vForecast(){
+  const f = DATA.forecast, vs = Object.keys(f.versions);
+  const name = {ok:"Works", deprecated:"Warns", broken:"Breaks", install_failed:"Won't install", "n/a":"–"};
+  const rows = Object.entries(f.matrix).filter(([,r]) => Object.values(r).some(c => !["ok","n/a"].includes(c.state)));
+  $("#view").innerHTML = `
+    <p class="sub">The original project, unchanged, installed and tested on each Python version. This shows what will break when you upgrade Python.</p>
+    <table class="fc">
+      <thead><tr><th></th>${vs.map(v => `<th>Python ${esc(f.versions[v].python)}</th>`).join("")}</tr></thead>
+      <tbody>
+        <tr><td><b>Installs</b></td>${vs.map(v => `<td><span class="cell ${f.versions[v].install_ok?'ok':'broken'}"><i></i>${f.versions[v].install_ok?"Yes":"No"}</span></td>`).join("")}</tr>
+        <tr><td><b>Tests</b></td>${vs.map(v => { const t=f.versions[v].tests; const bad = !t || t.collection_error || t.failed; return `<td><span class="cell ${bad?'broken':'ok'}"><i></i>${esc(counts(t))}</span>${f.versions[v].first_error?`<span class="err">${esc(f.versions[v].first_error)}</span>`:""}</td>`; }).join("")}</tr>
+        ${rows.map(([d,r]) => `<tr><td class="name code">${esc(d)}</td>${vs.map(v => `<td title="${esc(r[v].detail)}"><span class="cell ${r[v].state==='n/a'?'na':r[v].state}"><i></i>${name[r[v].state]}</span>${r[v].detail?`<span class="err">${esc(r[v].detail.slice(0,90))}</span>`:""}</td>`).join("")}</tr>`).join("")}
+      </tbody>
+    </table>
+    <p class="small muted" style="margin-top:14px">Packages that work on every version are hidden.</p>`;
+}
+
+function vOrganizer(){
+  const o = DATA.organizer;
+  const r = Object.entries(o.comparison.routes);
+  const label = {remove:"Remove", declare:"Declare", move_to_dev:"Move to dev", sync:"Sync", flag_conflict:"Conflict"};
+  $("#view").innerHTML = `
+    <p class="sub">The dependency files rebuilt from evidence: unused packages removed, missing ones declared, everything sorted, and requirements.txt and pyproject.toml kept in sync. Applied on top of the ${esc(o.applies_on_top_of || "original repository")}, then installed and tested.</p>
+    <div style="display:flex;gap:14px;align-items:center;margin-bottom:18px">${verdict(o.verdict)}${r.map(([k,x]) => `<span class="small muted">${k === "requirements" ? "requirements files" : "pyproject.toml"}: ${esc(counts(x.tests_after))}</span>`).join("")}</div>
+    <table><thead><tr><th>Change</th><th>Package</th><th>Reason</th><th>Evidence</th></tr></thead>
+    <tbody>${o.actions.map(a => `<tr><td><span class="chip">${esc(label[a.action]||a.action)}</span></td><td class="name code">${esc(a.dependency)}</td><td>${esc(a.reason)}</td><td class="small muted code">${esc(a.evidence||"")}</td></tr>`).join("")}</tbody></table>
+    ${Object.keys(o.ai_annotations||{}).length ? `<p class="small" style="margin-top:14px">Comments ending in <code># (AI) …</code> were written by Gemma 4 to explain what each package is for.</p>` : ""}
+    <h3 class="sec">The organized files</h3>${diff(o.diff)}`;
+}
+
+function vBranch(){
+  $("#view").innerHTML = `<div class="panel">
+    <h3 class="sec" style="margin-top:0">Put the verified changes on a git branch</h3>
+    <p class="sub" style="margin:0 0 18px">DepExit makes a new branch in your copy of the repository with up to three commits: the verified dependency fixes${DATA.organizer?", the organized dependency files":""}, and the capsules as evidence. Nothing is pushed. You review it, then push and open a pull request.</p>
+    <div class="row2">
+      <div><label class="lbl" for="repo">Folder of your local clone</label><input type="text" id="repo" class="mono" placeholder="C:\\Users\\you\\H26_Team_DepExit"></div>
+      <div><label class="lbl" for="bname">Branch name (optional)</label><input type="text" id="bname" class="mono" placeholder="depexit/exit-…"></div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:center;margin-top:16px;flex-wrap:wrap">
+      ${DATA.organizer ? `<label class="chk"><input type="checkbox" id="borg" checked>Include the organized files</label>` : ""}
+      <button class="btn" id="mk" style="background:#000;color:#fff">Create branch</button>
+    </div>
+    <p class="hint">The folder must be a git repository with no unsaved changes.</p>
+    <pre class="out hidden" id="gitout"></pre></div>`;
+  $("#mk").onclick = async () => {
+    if(!$("#repo").value.trim()){ toast("Enter the folder of your local clone."); return; }
+    $("#mk").disabled = true; $("#mk").textContent = "Creating…";
+    const r = await api("/api/branch", {repo:$("#repo").value.trim(), name:$("#bname").value.trim(), organizer:$("#borg") ? $("#borg").checked : false});
+    $("#mk").disabled = false; $("#mk").textContent = "Create branch";
+    const d = r.data || {}; const out = $("#gitout"); out.classList.remove("hidden");
+    out.textContent = (d.steps||[]).map(s => `${s.returncode===0?"✓":"✗"} ${s.cmd}`).join("\n") + "\n\n" + (d.ok ? `Created ${d.branch} with ${d.applied.join(" and ")}.\nNext: ${d.next}` : `Not created: ${d.error || "nothing applied"}`);
+    toast(d.ok ? "Branch created." : "Branch not created.");
+  };
+}
+
+function vFiles(){
+  $("#view").innerHTML = `
+    <p class="sub">${esc(DATA.run.target)} at commit <code>${esc((DATA.run.commit||"").slice(0,10))}</code>. Python ${esc(DATA.run.python)}. Finished ${esc(fmtWhen(DATA.run.finished))}.</p>
+    <ul class="files">${DATA.files.map(f => `<li><a href="${fileUrl(f)}" target="_blank" rel="noopener">${esc(f)}</a></li>`).join("")}</ul>`;
+}
+
+/* ---------- boot ---------- */
+(async () => {
+  const r = await api("/api/state"); const s = r.data || {};
+  keyState(!!s.has_key);
+  await loadHistory();
+  if(s.running){ showRunning(); poll(); }
+  else if(s.out){ const res = await api("/api/result"); if(res.data){ DATA = res.data; showResults(); loadHistory(); } }
+})();
+</script>
+</body>
+</html>

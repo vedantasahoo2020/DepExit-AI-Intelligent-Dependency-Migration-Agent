@@ -1,0 +1,616 @@
+{
+  "schema": "dependency-exit-capsule/1.0/index",
+  "run": {
+    "tool": "depexit 0.1.0",
+    "started": "2026-10-15T09:52:16+00:00",
+    "finished": "2026-10-15T09:59:05+00:00",
+    "target": "https://github.com/rishrek/LinkWatch",
+    "commit": "f52f3930c8e7c33d934ccf614955a38e26984bd5",
+    "python": "3.12.7",
+    "install_routes": [
+      "requirements",
+      "pyproject"
+    ],
+    "ai_model": "gemma-4-26b-a4b-it",
+    "ai_calls": 3,
+    "manifests": {
+      "entries": [
+        {
+          "name": "pytest",
+          "display_name": "pytest",
+          "specifier": "",
+          "pinned": null,
+          "marker": null,
+          "file": "requirements-dev.txt",
+          "line": 1,
+          "group": "dev",
+          "raw": "pytest"
+        },
+        {
+          "name": "nose",
+          "display_name": "nose",
+          "specifier": "==1.3.7",
+          "pinned": "1.3.7",
+          "marker": null,
+          "file": "requirements-dev.txt",
+          "line": 2,
+          "group": "dev",
+          "raw": "nose==1.3.7"
+        },
+        {
+          "name": "toml",
+          "display_name": "toml",
+          "specifier": "==0.10.2",
+          "pinned": "0.10.2",
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 1,
+          "group": "runtime",
+          "raw": "toml==0.10.2"
+        },
+        {
+          "name": "appdirs",
+          "display_name": "appdirs",
+          "specifier": "==1.4.4",
+          "pinned": "1.4.4",
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 2,
+          "group": "runtime",
+          "raw": "appdirs==1.4.4"
+        },
+        {
+          "name": "requests",
+          "display_name": "requests",
+          "specifier": "==2.31.0",
+          "pinned": "2.31.0",
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 3,
+          "group": "runtime",
+          "raw": "requests==2.31.0"
+        },
+        {
+          "name": "jinja2",
+          "display_name": "Jinja2",
+          "specifier": "==2.11.3",
+          "pinned": "2.11.3",
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 4,
+          "group": "runtime",
+          "raw": "Jinja2==2.11.3"
+        },
+        {
+          "name": "pydantic",
+          "display_name": "pydantic",
+          "specifier": "==1.10.13",
+          "pinned": "1.10.13",
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 5,
+          "group": "runtime",
+          "raw": "pydantic==1.10.13"
+        },
+        {
+          "name": "click",
+          "display_name": "click",
+          "specifier": ">=7",
+          "pinned": null,
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 6,
+          "group": "runtime",
+          "raw": "click>=7"
+        },
+        {
+          "name": "six",
+          "display_name": "six",
+          "specifier": "",
+          "pinned": null,
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 7,
+          "group": "runtime",
+          "raw": "six"
+        },
+        {
+          "name": "chardet",
+          "display_name": "chardet",
+          "specifier": "==5.2.0",
+          "pinned": "5.2.0",
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 8,
+          "group": "runtime",
+          "raw": "chardet==5.2.0"
+        },
+        {
+          "name": "setuptools",
+          "display_name": "setuptools",
+          "specifier": "==75.8.0",
+          "pinned": "75.8.0",
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 9,
+          "group": "runtime",
+          "raw": "setuptools==75.8.0"
+        },
+        {
+          "name": "idna",
+          "display_name": "idna",
+          "specifier": "==2.7",
+          "pinned": "2.7",
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 10,
+          "group": "runtime",
+          "raw": "idna==2.7"
+        },
+        {
+          "name": "python-dateutil",
+          "display_name": "python-dateutil",
+          "specifier": "",
+          "pinned": null,
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 11,
+          "group": "runtime",
+          "raw": "python-dateutil"
+        },
+        {
+          "name": "rich",
+          "display_name": "rich",
+          "specifier": "",
+          "pinned": null,
+          "marker": null,
+          "file": "requirements.txt",
+          "line": 12,
+          "group": "runtime",
+          "raw": "rich"
+        },
+        {
+          "name": "toml",
+          "display_name": "toml",
+          "specifier": "==0.10.2",
+          "pinned": "0.10.2",
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 13,
+          "group": "runtime",
+          "raw": "toml==0.10.2"
+        },
+        {
+          "name": "appdirs",
+          "display_name": "appdirs",
+          "specifier": "==1.4.4",
+          "pinned": "1.4.4",
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 14,
+          "group": "runtime",
+          "raw": "appdirs==1.4.4"
+        },
+        {
+          "name": "requests",
+          "display_name": "requests",
+          "specifier": "==2.31.0",
+          "pinned": "2.31.0",
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 15,
+          "group": "runtime",
+          "raw": "requests==2.31.0"
+        },
+        {
+          "name": "jinja2",
+          "display_name": "Jinja2",
+          "specifier": "==2.11.3",
+          "pinned": "2.11.3",
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 16,
+          "group": "runtime",
+          "raw": "Jinja2==2.11.3"
+        },
+        {
+          "name": "pydantic",
+          "display_name": "pydantic",
+          "specifier": ">=2",
+          "pinned": null,
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 17,
+          "group": "runtime",
+          "raw": "pydantic>=2"
+        },
+        {
+          "name": "click",
+          "display_name": "click",
+          "specifier": ">=7",
+          "pinned": null,
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 18,
+          "group": "runtime",
+          "raw": "click>=7"
+        },
+        {
+          "name": "six",
+          "display_name": "six",
+          "specifier": "",
+          "pinned": null,
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 19,
+          "group": "runtime",
+          "raw": "six"
+        },
+        {
+          "name": "chardet",
+          "display_name": "chardet",
+          "specifier": "==5.2.0",
+          "pinned": "5.2.0",
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 20,
+          "group": "runtime",
+          "raw": "chardet==5.2.0"
+        },
+        {
+          "name": "setuptools",
+          "display_name": "setuptools",
+          "specifier": "==75.8.0",
+          "pinned": "75.8.0",
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 21,
+          "group": "runtime",
+          "raw": "setuptools==75.8.0"
+        },
+        {
+          "name": "idna",
+          "display_name": "idna",
+          "specifier": "==2.7",
+          "pinned": "2.7",
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 22,
+          "group": "runtime",
+          "raw": "idna==2.7"
+        },
+        {
+          "name": "python-dateutil",
+          "display_name": "python-dateutil",
+          "specifier": "",
+          "pinned": null,
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 23,
+          "group": "runtime",
+          "raw": "python-dateutil"
+        },
+        {
+          "name": "rich",
+          "display_name": "rich",
+          "specifier": "",
+          "pinned": null,
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 24,
+          "group": "runtime",
+          "raw": "rich"
+        },
+        {
+          "name": "setuptools",
+          "display_name": "setuptools",
+          "specifier": ">=61",
+          "pinned": null,
+          "marker": null,
+          "file": "pyproject.toml",
+          "line": 2,
+          "group": "build",
+          "raw": "setuptools>=61"
+        }
+      ],
+      "commented_out": [
+        {
+          "file": "requirements.txt",
+          "line": 13,
+          "text": "# PyYAML==5.1"
+        }
+      ],
+      "requires_python": ">=3.10",
+      "files": [
+        "requirements-dev.txt",
+        "requirements.txt",
+        "pyproject.toml"
+      ]
+    },
+    "parse_errors": []
+  },
+  "baseline": {
+    "requirements": {
+      "install_ok": true,
+      "tests": {
+        "passed": 9,
+        "failed": 1
+      },
+      "failing": [
+        "tests.test_report::test_report_renders_all_sites"
+      ],
+      "warnings": [
+        "C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (linkwatch/resources.py:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html"
+      ]
+    },
+    "pyproject": {
+      "install_ok": true,
+      "tests": {
+        "passed": 9,
+        "failed": 1
+      },
+      "failing": [
+        "tests.test_report::test_report_renders_all_sites"
+      ],
+      "warnings": [
+        "C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (site-packages/pydantic/_internal/_config.py:408: UserWarning: Valid config keys have changed in V2:",
+        "C:/Users/mihir/OneDrive/Desktop/H26_Prompt-Pirates_DepExit-main (linkwatch/resources.py:1: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html"
+      ]
+    }
+  },
+  "all_dependencies": [
+    {
+      "name": "jinja2",
+      "level": "high",
+      "score": 8,
+      "indicators": [
+        "import_fails",
+        "pinned_behind",
+        "test_failure"
+      ],
+      "selected": true,
+      "verdict": "verified_improvement"
+    },
+    {
+      "name": "setuptools",
+      "level": "high",
+      "score": 8,
+      "indicators": [
+        "deprecation_warning",
+        "pinned_behind",
+        "tooling_as_runtime"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "nose",
+      "level": "high",
+      "score": 6,
+      "indicators": [
+        "import_fails",
+        "stale"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "pydantic",
+      "level": "high",
+      "score": 5,
+      "indicators": [
+        "manifest_conflict",
+        "pinned_behind"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "requests",
+      "level": "high",
+      "score": 5,
+      "indicators": [
+        "monkeypatch",
+        "pinned_behind",
+        "private_api"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "idna",
+      "level": "medium",
+      "score": 4,
+      "indicators": [
+        "pinned_behind",
+        "unused"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "appdirs",
+      "level": "high",
+      "score": 3,
+      "indicators": [
+        "stale"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "toml",
+      "level": "high",
+      "score": 3,
+      "indicators": [
+        "stale"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "certifi",
+      "level": "medium",
+      "score": 2,
+      "indicators": [
+        "undeclared"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "chardet",
+      "level": "medium",
+      "score": 2,
+      "indicators": [
+        "pinned_behind"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "python-dateutil",
+      "level": "medium",
+      "score": 2,
+      "indicators": [
+        "stale"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "six",
+      "level": "medium",
+      "score": 2,
+      "indicators": [
+        "unused"
+      ],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "click",
+      "level": "none",
+      "score": 0,
+      "indicators": [],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "pytest",
+      "level": "none",
+      "score": 0,
+      "indicators": [],
+      "selected": false,
+      "verdict": null
+    },
+    {
+      "name": "rich",
+      "level": "none",
+      "score": 0,
+      "indicators": [],
+      "selected": false,
+      "verdict": null
+    }
+  ],
+  "combined_migration": null,
+  "organizer": {
+    "actions": [
+      {
+        "action": "declare",
+        "dependency": "certifi",
+        "spec": "certifi",
+        "group": "runtime",
+        "reason": "imported by the code but not declared (was only installed transitively)",
+        "evidence": "linkwatch/checker.py:4; installed transitively as 2026.7.22"
+      },
+      {
+        "action": "remove",
+        "dependency": "idna",
+        "reason": "declared as runtime but never imported or referenced",
+        "evidence": "Declared as a runtime dependency but never imported or referenced"
+      },
+      {
+        "action": "flag_conflict",
+        "dependency": "pydantic",
+        "reason": "requirements.txt and pyproject.toml disagree; left for the migration step",
+        "evidence": "pydantic==1.10.13 vs pydantic>=2"
+      },
+      {
+        "action": "remove",
+        "dependency": "six",
+        "reason": "declared as runtime but never imported or referenced",
+        "evidence": "Declared as a runtime dependency but never imported or referenced"
+      }
+    ],
+    "log": [
+      "rewrote requirements.txt (11 runtime packages)",
+      "rewrote requirements-dev.txt (2 dev packages)",
+      "rewrote [project].dependencies in pyproject.toml (11 packages)"
+    ],
+    "ai_annotations": {
+      "appdirs": "Determines platform-specific cache directory locations.",
+      "certifi": "Provides SSL certificates for secure HTTP requests.",
+      "chardet": "Detects character encoding of response content.",
+      "click": "Creates the command line interface.",
+      "jinja2": "Renders HTML report templates.",
+      "nose": "Runs the project tests.",
+      "pydantic": "Validates site and settings configuration data.",
+      "pytest": "Provides a framework for running tests.",
+      "python-dateutil": "Parses date strings into datetime objects.",
+      "requests": "Handles HTTP requests and responses.",
+      "rich": "Renders beautiful tables and terminal output.",
+      "setuptools": "Locates package resource files like templates.",
+      "toml": "Parses TOML configuration files."
+    },
+    "ai_error": null,
+    "comparison": {
+      "routes": {
+        "requirements": {
+          "install_ok_before": true,
+          "install_ok_after": true,
+          "tests_before": {
+            "passed": 10
+          },
+          "tests_after": {
+            "passed": 10
+          },
+          "fixed": [],
+          "regressed": [],
+          "still_failing": [],
+          "new_tests": [],
+          "warnings_removed": [],
+          "warnings_added": [],
+          "regression_details": {}
+        },
+        "pyproject": {
+          "install_ok_before": true,
+          "install_ok_after": true,
+          "tests_before": {
+            "passed": 10
+          },
+          "tests_after": {
+            "passed": 10
+          },
+          "fixed": [],
+          "regressed": [],
+          "still_failing": [],
+          "new_tests": [],
+          "warnings_removed": [],
+          "warnings_added": [],
+          "regression_details": {}
+        }
+      },
+      "residual_references": []
+    },
+    "verdict": "verified_no_regression",
+    "applies_on_top_of": "verified migration",
+    "patch": "organizer.patch",
+    "diff": "--- a/pyproject.toml\n+++ b/pyproject.toml\n@@ -10,18 +10,17 @@\n license = { text = \"MIT\" }\n requires-python = \">=3.10\"\n dependencies = [\n-    \"toml==0.10.2\",\n     \"appdirs==1.4.4\",\n-    \"requests==2.31.0\",\n+    \"certifi\",\n+    \"chardet==5.2.0\",\n+    \"click>=7\",\n     \"Jinja2>=3.1.0\",\n     \"pydantic>=2\",\n-    \"click>=7\",\n-    \"six\",\n-    \"chardet==5.2.0\",\n+    \"python-dateutil\",\n+    \"requests==2.31.0\",\n+    \"rich\",\n     \"setuptools==75.8.0\",\n-    \"idna==2.7\",\n-    \"python-dateutil\",\n-    \"rich\",\n+    \"toml==0.10.2\",\n ]\n \n [project.scripts]\n--- a/requirements-dev.txt\n+++ b/requirements-dev.txt\n@@ -1,2 +1,3 @@\n-pytest\n-nose==1.3.7\n+# Development / test dependencies - organized by DepExit\n+nose==1.3.7  # (AI) Runs the project tests.\n+pytest  # (AI) Provides a framework for running tests.\n--- a/requirements.txt\n+++ b/requirements.txt\n@@ -1,13 +1,15 @@\n-toml==0.10.2\n-appdirs==1.4.4\n-requests==2.31.0\n-Jinja2>=3.1.0\n-pydantic==1.10.13\n-click>=7\n-six\n-chardet==5.2.0\n-setuptools==75.8.0\n-idna==2.7\n-python-dateutil\n-rich\n+# Runtime dependencies - organized by DepExit (sorted, synced with pyproject.toml)\n+appdirs==1.4.4  # (AI) Determines platform-specific cache directory locations.\n+certifi  # (AI) Provides SSL certificates for secure HTTP requests.\n+chardet==5.2.0  # (AI) Detects character encoding of response content.\n+click>=7  # (AI) Creates the command line interface.\n+Jinja2>=3.1.0  # (AI) Renders HTML report templates.\n+pydantic==1.10.13  # (AI) Validates site and settings configuration data.\n+python-dateutil  # (AI) Parses date strings into datetime objects.\n+requests==2.31.0  # (AI) Handles HTTP requests and responses.\n+rich  # (AI) Renders beautiful tables and terminal output.\n+setuptools==75.8.0  # (AI) Locates package resource files like templates.\n+toml==0.10.2  # (AI) Parses TOML configuration files.\n+\n+# Disabled\n # PyYAML==5.1\n"
+  },
+  "forecast": null,
+  "capsules": [
+    "dependencies/jinja2.json"
+  ],
+  "combined_patch": "combined-migration.patch"
+}

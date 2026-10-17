@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "depexit"
+version = "0.1.0"
+description = "AI-assisted dependency exit planning for Python repositories, verified by execution"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "google-genai>=1.0",
+    "packaging>=23",
+    "rich>=13",
+    "uv>=0.4",
+    "tomli>=2; python_version < '3.11'",
+]
+
+[project.scripts]
+depexit = "depexit.cli:main"
+
+[tool.setuptools]
+packages = ["depexit"]
+
+[tool.setuptools.package-data]
+depexit = ["static/*"]

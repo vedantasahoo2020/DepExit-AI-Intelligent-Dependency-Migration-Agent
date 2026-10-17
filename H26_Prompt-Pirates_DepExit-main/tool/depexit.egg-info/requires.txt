@@ -1,0 +1,7 @@
+google-genai>=1.0
+packaging>=23
+rich>=13
+uv>=0.4
+
+[:python_version < "3.11"]
+tomli>=2
